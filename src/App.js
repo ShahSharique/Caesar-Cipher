@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+function CaesarCipher() {
+  const [inputText, setInputText] = useState("");
+  const [shiftAmount, setShiftAmount] = useState(0);
+  const [outputText, setOutputText] = useState("");
+
+  const encryptText = () => {
+    let result = "";
+    for (let i = 0; i < inputText.length; i++) {
+      let charCode = inputText.charCodeAt(i);
+      if (charCode >= 65 && charCode <= 90) {
+        result += String.fromCharCode(
+          ((charCode - 65 + shiftAmount) % 26) + 65
+        );
+      } else if (charCode >= 97 && charCode <= 122) {
+        result += String.fromCharCode(
+          ((charCode - 97 + shiftAmount) % 26) + 97
+        );
+      } else {
+        result += inputText[i];
+      }
+    }
+    setOutputText(result);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <header className="App-header">Caesar Cipher</header>
+      
+      <div className="containt">
+        <label htmlFor="inputText">Enter text to encrypt:</label>
+        <input
+          type="text"
+          id="inputText"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="shiftAmount">Enter shift amount:</label>
+        <input
+          type="number"
+          id="shiftAmount"
+          value={shiftAmount}
+          onChange={(e) => setShiftAmount(parseInt(e.target.value))}
+        />
+      </div>
+      <div>
+        <button onClick={encryptText}>Encrypt</button>
+      </div>
+      <div>
+        <label htmlFor="outputText">Encrypted text:</label>
+        <textarea id="outputText" value={outputText} readOnly />
+      </div>
     </div>
   );
 }
 
-export default App;
+export default CaesarCipher;
